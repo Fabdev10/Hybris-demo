@@ -67,7 +67,7 @@ curl.exe "http://localhost:8080/occ/v2/products/search?query=laptop"
 3. Creazione ordine locale e invio all'ERP:
 
 ```powershell
-curl.exe -X POST http://localhost:8080/occ/v2/orders -H "Content-Type: application/json" -d '{`"productCode`":`"SKU-100`",`"quantity`":2}'
+curl.exe -X POST http://localhost:8080/occ/v2/orders -H "Content-Type: application/json" -d "{`"productCode`":`"SKU-100`",`"quantity`":2}"
 ```
 
 La risposta contiene l'ID locale, `status: "CONFIRMED"` e l'`erpOrderId` generato dall'ERP.
