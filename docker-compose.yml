@@ -1,0 +1,16 @@
+services:
+  erp-mock:
+    build:
+      context: ./erp-mock
+    ports:
+      - "8081:8081"
+
+  commerce-mock:
+    build:
+      context: ./commerce-mock
+    ports:
+      - "8080:8080"
+    environment:
+      ERP_BASE_URL: http://erp-mock:8081
+    depends_on:
+      - erp-mock
