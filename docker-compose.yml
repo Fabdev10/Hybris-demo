@@ -4,6 +4,11 @@ services:
       context: ./erp-mock
     ports:
       - "8081:8081"
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:8081/erp/products/SKU-100/stock"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
 
   commerce-mock:
     build:
@@ -13,4 +18,19 @@ services:
     environment:
       ERP_BASE_URL: http://erp-mock:8081
     depends_on:
-      - erp-mock
+      erp-mock:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:8080/occ/v2/products/search?query=SKU"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+
+  demo-ui:
+    build:
+      context: ./demo-ui
+    ports:
+      - "3000:80"
+    depends_on:
+      commerce-mock:
+        condition: service_healthy

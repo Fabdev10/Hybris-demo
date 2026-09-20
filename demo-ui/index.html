@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Commerce Flow Lab</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="shell">
+        <header class="topbar">
+            <div class="brand"><span class="brand-mark">CF</span><div><strong>Commerce Flow Lab</strong><small>Hybris patterns / ERP integration</small></div></div>
+            <div class="system-status"><span class="status-dot"></span><span>LOCAL LAB</span><span class="divider"></span><span>API :8080</span></div>
+        </header>
+
+        <main>
+            <section class="intro">
+                <div>
+                    <p class="eyebrow">Interactive architecture walkthrough</p>
+                    <h1>See the handoff,<br><em>not just the result.</em></h1>
+                    <p class="lede">Run a Commerce operation and watch each boundary light up: local catalog, OCC API, live ERP data and order confirmation.</p>
+                </div>
+                <div class="intro-badge"><span>3</span><small>scenes<br>to run</small></div>
+            </section>
+
+            <section class="flow-board" aria-label="Architecture flow">
+                <div class="flow-node browser"><span class="node-index">01</span><strong>Browser</strong><small>your action</small></div>
+                <span class="flow-arrow">&#8594;</span>
+                <div class="flow-node commerce"><span class="node-index">02</span><strong>Commerce</strong><small>OCC + H2</small></div>
+                <span class="flow-arrow">&#8594;</span>
+                <div class="flow-node erp"><span class="node-index">03</span><strong>ERP mock</strong><small>price / ATP / order</small></div>
+                <span class="flow-arrow return">&#8617;</span>
+                <div class="flow-node response"><span class="node-index">04</span><strong>Response</strong><small>enriched state</small></div>
+            </section>
+
+            <div class="workspace-grid">
+                <section class="control-panel">
+                    <div class="section-heading"><div><p class="eyebrow">Run a scene</p><h2>Operations</h2></div><button class="ghost-button" id="reset-button" type="button">Reset</button></div>
+
+                    <article class="operation-card active" data-operation="import">
+                        <div class="operation-title"><span class="scene-number">01</span><div><h3>ImpEx import</h3><p>Load local catalog data into the Commerce Type System.</p></div><span class="scene-state" id="import-state">READY</span></div>
+                        <label class="file-drop" for="csv-file"><span class="file-icon">CSV</span><span><strong id="file-name">products.csv</strong><small>Choose a CSV file to upsert by product code</small></span><input id="csv-file" type="file" accept=".csv,text/csv"></label>
+                        <button class="primary-button" id="import-button" type="button">Import into Commerce <span>&#8594;</span></button>
+                    </article>
+
+                    <article class="operation-card" data-operation="search">
+                        <div class="operation-title"><span class="scene-number">02</span><div><h3>Product search</h3><p>Query H2, then enrich each match with live ERP data.</p></div><span class="scene-state" id="search-state">READY</span></div>
+                        <div class="input-row"><label class="field-label" for="search-input">Query</label><input id="search-input" value="laptop" placeholder="e.g. laptop or SKU-100"><button class="secondary-button" id="search-button" type="button">Search</button></div>
+                    </article>
+
+                    <article class="operation-card" data-operation="order">
+                        <div class="operation-title"><span class="scene-number">03</span><div><h3>Checkout handoff</h3><p>Create locally, send to ERP, persist the returned status.</p></div><span class="scene-state" id="order-state">READY</span></div>
+                        <div class="input-grid"><label class="field-label">Product<input id="order-product" value="SKU-100"></label><label class="field-label">Quantity<input id="order-quantity" type="number" min="1" value="2"></label></div>
+                        <button class="primary-button" id="order-button" type="button">Create order <span>&#8594;</span></button>
+                    </article>
+                </section>
+
+                <aside class="inspector-panel">
+                    <div class="section-heading"><div><p class="eyebrow">Live explanation</p><h2>Scene trace</h2></div><span class="trace-counter" id="trace-counter">0 events</span></div>
+                    <div class="timeline" id="timeline"><div class="empty-trace"><span class="empty-line"></span><strong>Waiting for an operation</strong><p>Run one of the scenes to reveal the request path.</p></div></div>
+                    <div class="result-area" id="result-area" hidden><div class="result-heading"><span>Payload / result</span><button id="copy-result" type="button" title="Copy result">Copy</button></div><pre id="result-content"></pre></div>
+                </aside>
+            </div>
+        </main>
+        <footer><span>Commerce Flow Lab</span><span>Educational mock / no SAP libraries</span><span>Java 17 + Spring Boot 3 + H2</span></footer>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
